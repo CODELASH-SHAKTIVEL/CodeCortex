@@ -1,18 +1,16 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/'])
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect()
-  }
-})
-
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+ 
+// This function can be marked `async` if using `await` inside
+export async function middleware(request: NextRequest) {
+    const {isAuthenticated} = getKindeServerSession();
+    if (!(await isAuthenticated())) {
+        return NextResponse.redirect(new URL('/api/auth/login?post_login_redirect_url=/sync-user', request.url))
+      }
+}
+ 
+// See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
+  matcher: '/dashboard',
 }
