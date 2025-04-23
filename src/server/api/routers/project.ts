@@ -12,7 +12,7 @@ export const projectRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id; // Access the user ID from the context
-      const userEmail = ctx.user.email; // Access the user email from the context
+      // Validate the input data
       console.log("Creating project with input: ", input);
 
       // Step 1: Create the project
@@ -34,4 +34,21 @@ export const projectRouter = createTRPCRouter({
 
       return project;
     }),
+    
+  getProjects: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id; // Access the user ID from the context
+    // Fetch projects associated with the user
+    const projects = await ctx.db.project.findMany({
+      where: {
+        UserToProject: {
+          some: {
+            userId: userId, // Filter projects by the user's ID
+          },
+        },
+        DeletedAt: null // Ensure the project is not deleted
+      },
+    });
+
+    return projects;
+  })
 });
