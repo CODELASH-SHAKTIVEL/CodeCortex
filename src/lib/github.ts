@@ -7,7 +7,7 @@ export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 });
 
-const githubUrl = 'https://github.com/CODELASH-SHAKTIVEL/Incognito_feedback'
+// const githubUrl = 'https://github.com/CODELASH-SHAKTIVEL/Incognito_feedback'
 
 type Response = {
     commitHash: string;
@@ -76,6 +76,7 @@ export const  pollCommits = async (projectId: string) => {
  
   const commits = await db.commit.createMany({
     data: summarises.map((summary, index) => {
+      console.log("processing commit", unprocessedCommits[index]);
       return {
         projectId: projectId,
         commitHash: unprocessedCommits[index]!.commitHash,
@@ -148,4 +149,4 @@ export const filterUnprocessedCommits = async ( projectId : string,  commitHashe
   );
 }
  
-await pollCommits('cm9spv3i80000tx1kvlvy6oo5')
+// await pollCommits('cm9spv3i80000tx1kvlvy6oo5')
