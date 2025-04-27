@@ -1,4 +1,5 @@
 import { pollCommits } from "@/lib/github";
+import { indexGithubRepo } from "@/lib/githubrepo-loader";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 
@@ -33,10 +34,13 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
+      await indexGithubRepo(
+        project.id, input.repoUrl, input.githubToken
+      ); // Call the indexGithubRepo function with the project ID, GitHub URL, and token
       await pollCommits(project.id); // Call the pollCommits function with the project ID and GitHub token
       return project;
     }),
-    
+
   getProjects: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.user.id; // Access the user ID from the context
     // Fetch projects associated with the user
@@ -55,15 +59,15 @@ export const projectRouter = createTRPCRouter({
   }),
 
   getCommits: protectedProcedure
-  .input(z.object({
-    projectId: z.string(),
-  }))
-  .query(async ({ ctx, input }) => { 
-    pollCommits(input.projectId); // Call the pollCommits function with the project ID
-    return await ctx.db.commit.findMany({
-      where: {
-        projectId: input.projectId,
-      },
-    });
-  }),
+    .input(z.object({
+      projectId: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+      pollCommits(input.projectId); // Call the pollCommits function with the project ID
+      return await ctx.db.commit.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+      });
+    }),
 });
