@@ -91,4 +91,44 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+    
+    getQuestions: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.question.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+        include: {
+          user: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+
+    getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+      const userId = ctx.user.id;
+    
+      const user = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          imageUrl: true,
+          firstName: true,
+          lastName: true,
+          emailAddress: true,
+          credits: true,
+        },
+      });
+    
+      return user;
+    }),
 });
