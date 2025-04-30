@@ -13,6 +13,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { askQuestion } from "../actions";
 import { readStreamableValue } from "ai/rsc";
+import { api } from "@/trpc/react";
+import useRefetch from "@/hooks/use-refetch";
+import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import MDEditor from "@uiw/react-md-editor";
+import CodeReferences from "./CodeReferences";
 
 const AskQuestionCard = () => {
     const { project } = useProject();
@@ -23,6 +29,8 @@ const AskQuestionCard = () => {
         { fileName: string; sourceCode: string; summary: string }[]
     >([]);
     const [answer, setAnswer] = React.useState("");
+    const saveAnswer = api.project.saveAnswer.useMutation();
+    const refetch = useRefetch();
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         setAnswer("");
@@ -50,21 +58,54 @@ const AskQuestionCard = () => {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-[80vw]">
                     <DialogHeader>
-                        <DialogTitle>
-                            <Image src="/logo.png" alt="logo" width={40} height={40} />
-                        </DialogTitle>
-                        <DialogTitle>Ask a question {project?.id}</DialogTitle>
+                        <div className="flex items-center gap-2">
+                            <DialogTitle>
+                                {/* <Image src=></Image> */}
+                                Logo
+                            </DialogTitle>
+                            <Button
+                                variant={"outline"}
+                                disabled={saveAnswer.isPending}
+                                onClick={() => {
+                                    saveAnswer.mutate(
+                                        {
+                                            projectId: project!.id,
+                                            question,
+                                            answer,
+                                            filesReferences,
+                                        },
+                                        {
+                                            onSuccess: () => {
+                                                toast.success("Answer saved!");
+                                                refetch();
+                                            },
+                                            onError: () => {
+                                                toast.error("Failed to save answer!");
+                                            },
+                                        },
+                                    );
+                                }}
+                            >
+                                Save Answer
+                            </Button>
+                        </div>
                     </DialogHeader>
-                    <h1>{answer}</h1>
-                    <h2>
-                        {
-                            filesReferences.map((file) => {
-                                return (
-                                    <span>{file.fileName}</span>
-                                )
-                            })
-                        }
-                    </h2>
+                    <div data-color-mode="light">
+                        <ScrollArea className="m-auto !h-full max-h-[40vh] max-w-[70vw] overflow-auto">
+                            <MDEditor.Markdown source={answer} />
+                        </ScrollArea>
+                    </div>
+
+                    <div className="h-4"></div>
+                    <CodeReferences filesReferences={filesReferences} />
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            setOpen(false);
+                        }}
+                    >
+                        Close
+                    </Button>
                 </DialogContent>
             </Dialog>
             <Card className="relative col-span-3">

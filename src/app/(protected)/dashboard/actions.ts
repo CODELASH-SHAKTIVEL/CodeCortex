@@ -7,16 +7,16 @@ import { generateEmbedding } from '@/lib/gemini'
 import { db } from '@/server/db'
 
 const google = createGoogleGenerativeAI({
-    apiKey : process.env.GEMINI_API_KEY
+    apiKey: process.env.GEMINI_API_KEY
 })
 
-export async function askQuestion (question:string, projectId:string) {
+export async function askQuestion(question: string, projectId: string) {
     const stream = createStreamableValue()
 
     const queryVector = await generateEmbedding(question);
     const vectorQuery = `[${queryVector.join(',')}]`
 
-    const result  = await db.$queryRaw`
+    const result = await db.$queryRaw`
     SELECT "fileName", "sourceCode", "summary",
     1 - ("summaryEmbedding" <=> ${vectorQuery}::vector) AS similarity
     FROM "SourceCodeEmbedding"
@@ -24,17 +24,21 @@ export async function askQuestion (question:string, projectId:string) {
         AND "projectId" = ${projectId}
         ORDER BY similarity DESC 
         LIMIT 10
-        ` as {fileName : string, sourceCode: string, summary: string, similarity:number}[]
+        ` as { fileName: string, sourceCode: string, summary: string, similarity: number }[]
 
     let context = '';
 
-    for(const doc of result) {
+    for (const doc of result) {
         context += `source: ${doc.fileName}\ncode content: ${doc.sourceCode}\n summary of file: ${doc.summary}\n\n`
     }
+   
+    console.log("context", context)
+    console.log("question", result);
+    console.log("question", result.map((doc) => doc.fileName).join(", "));
 
     (
         async () => {
-            const {textStream} = await streamText({
+            const { textStream } = await streamText({
                 model: google('gemini-1.5-flash'),
                 prompt: `
                     You are a code-focused AI assistant helping to explain codebases. Your target audience is technical interns seeking to understand the code structure and functionality.
@@ -69,7 +73,7 @@ Key guidelines:
     )()
 
     return {
-        output:stream.value,
+        output: stream.value,
         fileReferences: result
     }
 } 
