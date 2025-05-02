@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { useDropzone } from "react-dropzone";
 import React from "react";
-import { uploadFile } from "@/lib/firebase";
+import { uploadFile } from "@/lib/cloudinary";
 import { Presentation, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -44,10 +44,7 @@ const MeetingCard = () => {
       console.log(acceptedFiles);
       const file = acceptedFiles[0];
       if (!file) return;
-      const downloadUrl = (await uploadFile(
-        file as File,
-        setProgress,
-      )) as string;
+      const downloadUrl = (await uploadFile(file as File,setProgress, )) as string;
       uploadMeeting.mutate(
         {
           projectId: project.id,
