@@ -59,7 +59,7 @@ const page = ({}: Props) => {
             Link your Github Repository
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter the URL of your repository to link it to Dionysus
+            Enter the URL of your repository to link it to CodeCortex
           </p>
         </div>
 

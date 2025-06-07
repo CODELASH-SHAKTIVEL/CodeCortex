@@ -121,7 +121,7 @@ const AskQuestionCard = () => {
                         ></Textarea>
                         <div className="h-4"></div>
                         <Button type="submit" disabled={loading}>
-                            Ask Dionysus
+                            Ask CodeCortex
                         </Button>
                     </form>
                 </CardContent>

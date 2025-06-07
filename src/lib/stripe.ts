@@ -23,7 +23,7 @@ export async function createCheckoutSession(credits: number) {
         price_data: {
           currency: "inr",
           product_data: {
-            name: `${credits} Dionysus Credits`,
+            name: `${credits} CodeCortex Credits`,
           },
           unit_amount: Math.round((credits / 50) * 75 * 100),
         },
