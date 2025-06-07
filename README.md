@@ -1,8 +1,8 @@
-# 🎼 CodeMuse – Your AI-Powered GitHub Companion
+# CodeCortex – Your AI-Powered GitHub Companion
 
-🚀 **LIVE DEMO:** [codemuse.vercel.app](https://codemuse.vercel.app)
+🚀 **LIVE DEMO:** [codemuse.vercel.app](https://CodeCortex.vercel.app)
 
-**CodeMuse** is a full-stack SaaS platform designed for developers and teams to streamline GitHub repository management using the power of AI. From commit summaries to intelligent Q&A and a dynamic credit system, CodeMuse makes understanding codebases effortless.
+**CodeCortex** is a full-stack SaaS platform designed for developers and teams to streamline GitHub repository management using the power of AI. From commit summaries to intelligent Q&A and a dynamic credit system, CodeMuse makes understanding codebases effortless.
 
 Built with Next.js 15, Google Gemini AI, Stripe, and TypeScript.
 
