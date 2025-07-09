@@ -53,8 +53,8 @@ Built with Next.js 15, Google Gemini AI, Stripe, and TypeScript.
 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/dionysus.git
-cd dionysus
+git clone https://github.com/yourusername/CodeCotex.git
+cd CodeCodex
 ```
 
 2. Install Dependencies
@@ -98,8 +98,9 @@ Open http://localhost:3000 to see the app.
 | Feature            | Description                                                                                |
 | ------------------ | ------------------------------------------------------------------------------------------ |
 | Create Project     | Add a GitHub repository link and name. Costs credits based on the number of files.         |
-| Summarize Dionysus | fetches the latest 10 commits and summarizes them using Gemini AI.                         |
+| Summarize Commits  | fetches the latest 10 commits and summarizes them using Gemini AI.                         |
 | Ask Questions      | Users can ask AI questions related to their project and save answers for future reference. |
+| Summarize Scrums   | Users Can Summarize their Scrum meeting, using Cloudinary and gemini api                   |
 | Invite Team        | Share join links to collaborate with others.                                               |
 | Manage Credits     | Purchase more credits via Stripe if running low.                                           |
 | Archive Projects   | Clean up by archiving projects no longer needed.                                           |
@@ -110,7 +111,7 @@ Open http://localhost:3000 to see the app.
 
 When adding a repository:
 
-- CodeMuse checks if you have enough credits.
+- CodeCodex checks if you have enough credits.
 
 - Credits deducted based on file count.
 
