@@ -1,6 +1,6 @@
 # CodeCortex – Your AI-Powered GitHub Companion
 
-🚀 **LIVE DEMO:** [codemuse.vercel.app](https://CodeCortex.vercel.app)
+🚀 **LIVE DEMO:** [CodeCortex.vercel.app](https://CodeCortex.vercel.app)
 
 **CodeCortex** is a full-stack SaaS platform designed for developers and teams to streamline GitHub repository management using the power of AI. From commit summaries to intelligent Q&A and a dynamic credit system, CodeMuse makes understanding codebases effortless.
 
@@ -53,8 +53,8 @@ Built with Next.js 15, Google Gemini AI, Stripe, and TypeScript.
 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CodeCotex.git
-cd CodeCodex
+git clone https://github.com/yourusername/CodeCortex.git
+cd CodeCortex
 ```
 
 2. Install Dependencies
