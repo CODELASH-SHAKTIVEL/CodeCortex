@@ -1,95 +1,100 @@
-"use client"
-import { motion } from "framer-motion";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
+
 const Navbar = () => {
+  const { isAuthenticated } = useKindeAuth();
+
   return (
-    <nav className="flex w-full items-center justify-between border-t border-b border-neutral-200 px-4 py-4 dark:border-neutral-800">
-      <div className="flex items-center gap-2">
-        <div className="size-7 rounded-full bg-gradient-to-br from-violet-500 to-pink-500" />
-        <h1 className="text-base font-bold md:text-2xl">Aceternity UI</h1>
+    <header className="border-b border-border bg-background py-4 px-6 flex items-center justify-between shadow-sm">
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-violet-500 to-pink-500" />
+        <span className="text-xl font-bold text-foreground">CodeCortex</span>
       </div>
-      <LoginLink>
-        <button className="w-24 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 md:w-32 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-          Sign in
-        </button>
-      </LoginLink>
-    </nav>
+      {isAuthenticated ? (
+        <Link href="/dashboard">
+          <Button variant="default" className="px-6 py-2 text-sm">
+            Dashboard
+          </Button>
+        </Link>
+      ) : (
+        <LoginLink>
+          <Button variant="default" className="px-6 py-2 text-sm">
+            Sign in
+          </Button>
+        </LoginLink>
+      )}
+    </header>
   );
 };
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden bg-white dark:bg-black">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 md:py-16">
-        <h1 className="text-center text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white md:text-6xl lg:text-7xl max-w-5xl leading-tight">
-          {"Your AI Voice Interview Coach"
-            .split(" ")
-            .map((word, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.1,
-                  ease: "easeInOut",
-                }}
-                className="mr-2 inline-block"
-              >
-                {word}
-              </motion.span>
-            ))}
-        </h1>
+      <main className="flex flex-col items-center justify-center px-6 py-20">
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center text-4xl md:text-6xl font-extrabold tracking-tight max-w-4xl"
+        >
+          Supercharge GitHub with AI. Build Smarter with CodeCortex.
+        </motion.h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.8 }}
-          className="mt-6 max-w-2xl text-center text-lg md:text-xl text-neutral-600 dark:text-neutral-400"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-6 max-w-2xl text-center text-muted-foreground text-lg md:text-xl"
         >
-          Ace your next job interview or classroom presentation using our AI voice agent. Practice speaking, get instant feedback, and level up your confidence.
+          Manage commits, ask intelligent questions, summarize scrums, and
+          collaborate with your team — all powered by AI.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 1 }}
-          className="mt-8 flex flex-wrap justify-center gap-4"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-10 flex flex-wrap justify-center gap-4"
         >
-           <Link href="/dashboard">
-              <button className="w-60 transform rounded-lg bg-black px-6 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-                Start Practicing
-               </button>
-            </Link>
-
-           <Link href="/dashboard">
-             <button className="w-60 transform rounded-lg border border-gray-300 bg-white px-6 py-3 font-semibold text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100 dark:border-gray-700 dark:bg-black dark:text-white dark:hover:bg-gray-900">
-                Talk to Our Agent
-             </button>
-            </Link>
+          <LoginLink>
+          <Button variant="default" className="px-6 py-2 text-sm">
+            Start Exploring
+          </Button>
+        </LoginLink>
+          <Link href="/dashboard">
+            <Button size="lg" variant="outline">
+              Try AI Agent
+            </Button>
+          </Link>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 1.2 }}
-          className="mt-16 w-full max-w-5xl rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="mt-16 w-full max-w-5xl"
         >
-          <div className="overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
-            <Image
-              src="https://assets.aceternity.com/pro/aceternity-landing.webp"
-              alt="Voice agent preview"
-              className="aspect-[16/9] h-auto w-full object-cover"
-              height={1000}
-              width={1000}
-            />
-          </div>
+          <Card className="overflow-hidden border bg-muted">
+            <CardContent className="p-0">
+              <Image
+                src="https://assets.aceternity.com/pro/aceternity-landing.webp"
+                alt="Platform preview"
+                className="aspect-video w-full object-cover"
+                width={1200}
+                height={600}
+              />
+            </CardContent>
+          </Card>
         </motion.div>
       </main>
     </div>
   );
 }
-
